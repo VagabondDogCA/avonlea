@@ -414,6 +414,7 @@ Window_Message.prototype.startMessage = function() {
 Window_Message.prototype.startPopMessageStuff = function() {
 	this.loadWindowskin(); // load windowskin in case it was changed with plugin command
 	this._nameBoxWindow.loadWindowskin();
+	this._choiceListWindow.loadWindowskin(); // Ensure choice window uses the same windowskin
 	this.createWindowTail();
 	this.changeWindowDimensions();
 	this.refreshDimmerBitmap();
@@ -724,10 +725,13 @@ Galv.Mstyle.Window_Message_convertEscapeCharacters = Window_Message.prototype.co
 Window_Message.prototype.convertEscapeCharacters = function(text) {
     text = Galv.Mstyle.Window_Message_convertEscapeCharacters.call(this, text);
     text = text.replace(/\x1bpop\[[^\]]*\]/gi, ""); // Remove \pop if present
-    text = text.replace(/\x1bwin\[(\d+)\]/gi, (_, p1) => {
-        Galv.Mstyle.tempPopData.windowskin = `Window${p1}`; // Set windowskin dynamically
+    text = text.replace(/\x1bwin\[(.+?)\]/gi, (_, p1) => {
+        Galv.Mstyle.tempPopData.windowskin = `win_${p1}`; // Set windowskin dynamically
         return ""; // Remove the escape code from the text
     });
+    if (!Galv.Mstyle.tempPopData.windowskin) {
+        Galv.Mstyle.tempPopData.windowskin = "win_marilla"; // Default to win_marilla
+    }
     return text;
 };
 
