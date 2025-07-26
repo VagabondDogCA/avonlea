@@ -1,7 +1,7 @@
 [
 null,
 {"id":1,"expanded":false,"name":"Preload","order":1,"parentId":0,"scrollX":975.5999999999999,"scrollY":544.1999999999999,"quick":false},
-{"id":2,"expanded":false,"name":"Avonlea (Summer)","order":2,"parentId":0,"scrollX":1969.3333333333333,"scrollY":1331.3333333333333,"quick":false},
+{"id":2,"expanded":false,"name":"Avonlea (Summer)","order":2,"parentId":0,"scrollX":2047,"scrollY":1187.5,"quick":false},
 {"id":3,"expanded":true,"name":"OWM V1","order":21,"parentId":9,"scrollX":582.5454545454546,"scrollY":1863.818181818182,"quick":false},
 {"id":4,"expanded":false,"name":"CowDress","order":25,"parentId":8,"scrollX":1216.5,"scrollY":680.25,"quick":false},
 {"id":5,"expanded":true,"name":"OWM v2","order":22,"parentId":9,"scrollX":1216.3636363636365,"scrollY":687.8181818181819,"quick":false},

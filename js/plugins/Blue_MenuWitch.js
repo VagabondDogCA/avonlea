@@ -86,8 +86,13 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 	const _load_command_text = String(Parameters["Load Command Text"]);
 	const _animation_speed = parseInt(Parameters["Animation Speed"])
 	const _use_witch_item_system = JSON.parse(Parameters["Use Witch Item System?"])
-	const _actor_image = String(Parameters["Actor Image"] || "")
+	let _actor_image = String(Parameters["Actor Image"] || "")
 	const _sprite_character = String(Parameters["Sprite Character"] || "Actor1")
+
+	// Add a function to change the actor image filename
+	Bluemoon.MenuWitch.setActorImage = function(filename) {
+		_actor_image = filename;
+	};
 
 	//###############################################################################
 	//
