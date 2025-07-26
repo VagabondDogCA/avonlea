@@ -722,8 +722,12 @@ Window_Message.prototype._refreshPauseSign = function() {
 
 Galv.Mstyle.Window_Message_convertEscapeCharacters = Window_Message.prototype.convertEscapeCharacters;
 Window_Message.prototype.convertEscapeCharacters = function(text) {
-    text = Galv.Mstyle.Window_Message_convertEscapeCharacters.call(this,text);
-	text = text.replace(/\x1bpop\[[^\]]*\]/gi, ""); // Remove it if different characters are present!
+    text = Galv.Mstyle.Window_Message_convertEscapeCharacters.call(this, text);
+    text = text.replace(/\x1bpop\[[^\]]*\]/gi, ""); // Remove \pop if present
+    text = text.replace(/\x1bwin\[(\d+)\]/gi, (_, p1) => {
+        Galv.Mstyle.tempPopData.windowskin = `Window${p1}`; // Set windowskin dynamically
+        return ""; // Remove the escape code from the text
+    });
     return text;
 };
 
