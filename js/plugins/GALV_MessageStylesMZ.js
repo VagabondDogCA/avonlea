@@ -414,7 +414,6 @@ Window_Message.prototype.startMessage = function() {
 Window_Message.prototype.startPopMessageStuff = function() {
 	this.loadWindowskin(); // load windowskin in case it was changed with plugin command
 	this._nameBoxWindow.loadWindowskin();
-	this._choiceListWindow.loadWindowskin(); // Ensure choice window uses the same windowskin
 	this.createWindowTail();
 	this.changeWindowDimensions();
 	this.refreshDimmerBitmap();
