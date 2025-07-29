@@ -14,9 +14,8 @@
     Window.prototype._renderFrame = function() {
         const bitmap = this.windowskin;
         const context = this._context;
-        const width = this.width;
-        const height = this.height;
-        const margin = this._margin;
+        const width = this.width - this._padding * 2;
+        const height = this.height - this._padding * 2;
         const borderSize = BORDER_SIZE;
 
         if (!bitmap || !bitmap.isReady()) {

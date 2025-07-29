@@ -68,6 +68,21 @@ Galv.Mstyle.pluginName = "GALV_MessageStylesMZ";
  * @desc How many pixels above the event/actor the message box will appear.
  * @default 60
  *
+ * @param DreamweaverMode
+ * @text Dreamweaver Mode
+ * @type boolean
+ * @default false
+ * @desc If enabled, the default windowskin will use win_marilladream instead of win_marilla.
+ *
+ * @param DefaultWindowskin
+ * @text Default Windowskin
+ * @desc The default windowskin graphic from /img/system (without extension).
+ * @default win_marilla
+ *
+ * @param DreamweaverWindowskin
+ * @text Dreamweaver Windowskin
+ * @desc The Dreamweaver windowskin graphic from /img/system (without extension).
+ * @default win_marilladream
  *
  * @command mWindowStyle
  * @text Message Window Style
@@ -77,7 +92,6 @@ Galv.Mstyle.pluginName = "GALV_MessageStylesMZ";
  * @text Windowskin
  * @default Window
  * @desc The windowskin graphic from /img/system (without extension)
- *
  *
  * @command pWindowStyle
  * @text Pop Window Style
@@ -91,8 +105,7 @@ Galv.Mstyle.pluginName = "GALV_MessageStylesMZ";
  * @arg arrowGraphic
  * @text Arrow Graphic
  * @default WindowArrow
- * @dec Change the arrow graphic for the popup window.
- *
+ * @desc Change the arrow graphic for the popup window.
  *
  * @command defaultWindowStyle
  * @text Reset Window Styles
@@ -752,7 +765,8 @@ Window_Base.prototype.loadPopMessageWindowskin = function() {
 		const skin = Galv.Mstyle.tempPopData.windowskin ? Galv.Mstyle.tempPopData.windowskin : $gameSystem._mStyles[1].windowskin;
 		return this.windowskin = ImageManager.loadSystem(skin);
 	} else {
-		// use the default settings
-		return this.windowskin = ImageManager.loadSystem($gameSystem._mStyles[0].windowskin);
+		// use the default settings or Dreamweaver mode
+		const skin = Galv.Mstyle.dreamweaverMode ? Galv.Mstyle.dreamweaverWindowskin : Galv.Mstyle.defaultWindowskin;
+		return this.windowskin = ImageManager.loadSystem(skin);
 	}
 };
