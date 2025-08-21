@@ -72,6 +72,12 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
  * @type file
  * @dir img/characters
  * @default Actor1
+ * 
+ * @param Menu Window Skin
+ * @desc The filename of the window skin to use for this menu (in img/system)
+ * @type file
+ * @dir img/system
+ * @default Window
  */
  //=============================================================================
 
@@ -88,10 +94,19 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 	const _use_witch_item_system = JSON.parse(Parameters["Use Witch Item System?"])
 	let _actor_image = String(Parameters["Actor Image"] || "")
 	const _sprite_character = String(Parameters["Sprite Character"] || "Actor1")
+	let _menu_window_skin = String(Parameters["Menu Window Skin"] || "Window");
 
-	// Add a function to change the actor image filename
-	Bluemoon.MenuWitch.setActorImage = function(filename) {
-		_actor_image = filename;
+	// Helper to override windowskin for plugin windows
+	function overrideWindowskin(win) {
+		const skinName = String($gameVariables.value(60) || "Window");
+		win.windowskin = ImageManager.loadSystem(skinName);
+	}
+
+	// Patch Window_Base to use window skin from variable 60
+	const _BlueMenuWitch_WindowBase_loadWindowskin = Window_Base.prototype.loadWindowskin;
+	Window_Base.prototype.loadWindowskin = function() {
+		const skinName = String($gameVariables.value(60) || "Window");
+		this.windowskin = ImageManager.loadSystem(skinName);
 	};
 
 	//###############################################################################
@@ -129,6 +144,11 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 			this.changeTextColor("#f0f0f0"); // Just off-white color
 			this.drawText(this.commandName(index), rect.x, rect.y, rect.width, "center");
 			this.resetTextColor();
+		}
+
+		initialize(rect) {
+			super.initialize(rect);
+			overrideWindowskin(this);
 		}
 	}
 
@@ -183,6 +203,7 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 		createTaskWindow() {
 			const rect = this.taskWindowRect();
 			this._taskWindow = new Window_Task(rect);
+			overrideWindowskin(this._taskWindow);
 			this.addWindow(this._taskWindow);
 		}
 
@@ -273,6 +294,7 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 		createListWindow() {
 			const rect = this.listWindowRect();
 			this._listWindow = new Window_SavefileList(rect);
+			overrideWindowskin(this._listWindow);
 			this._listWindow.setHandler("ok", this.onSavefileOk.bind(this));
 			this._listWindow.setHandler("cancel", () => {
 				this._commandWindow.activate()
@@ -304,9 +326,11 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 		createItemSystem() {
 			if(!_use_witch_item_system) {return;}
 			this._itemWindow = new Window_WitchItemList(this.itemListRect())
+			overrideWindowskin(this._itemWindow);
 			this.addWindow(this._itemWindow);
 			
 			this._helpWindow = new Window_Help(this.helpWindowRect())
+			overrideWindowskin(this._helpWindow);
 			this.addWindow(this._helpWindow);
 			this._helpWindow.openness = 0;
 
@@ -383,6 +407,7 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 
 		initialize(rect) {
 			super.initialize(rect);
+			overrideWindowskin(this);
 			this.refresh();
 		}
 
@@ -425,6 +450,11 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 	}
 
 	class Window_StatusWitch extends Window_StatusBase {
+
+		initialize(rect) {
+			super.initialize(rect);
+			overrideWindowskin(this);
+		}
 
 		refresh() {
 			super.refresh();
@@ -542,10 +572,32 @@ Bluemoon.MenuWitch = Bluemoon.MenuWitch || {};
 
 	class Window_WitchItemList extends Window_ItemList {
 
+		initialize(rect) {
+			super.initialize(rect);
+			overrideWindowskin(this);
+		}
+
 		includes(item) {
 			return DataManager.isItem(item)
 		}
 	}
 
+	// Restore script-callable function to change actor image at runtime
+	Bluemoon.MenuWitch.setActorImage = function(filename) {
+		_actor_image = filename;
+	}
+
 
 })(Bluemoon.MenuWitch);
+
+// The menu borders and backgrounds are determined by the window skin file:
+// img/system/Window.png
+// This is loaded automatically by RPG Maker MZ for all window elements.
+// The plugin does not override this behavior, so the default skin is used.
+
+// Remove logic that resets windowskin to default when quitting to title
+const _BlueMenuWitch_commandToTitle = Scene_GameEnd.prototype.commandToTitle;
+Scene_GameEnd.prototype.commandToTitle = function() {
+	$gameVariables.setValue(60, "win_default");
+	_BlueMenuWitch_commandToTitle.call(this);
+};

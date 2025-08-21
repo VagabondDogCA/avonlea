@@ -6,5 +6,5 @@ var $plugins =
 {"name":"SRD_WindowFrameAntiStretch","status":true,"description":"","parameters":{}},
 {"name":"GALV_MessageStylesMZ","status":true,"description":"(v.2.1) 'Show Text' windows float above characters and change visuals during game.","parameters":{"iIndicator":"2,0,6","mPadding":"5,5,5,5","invertPos":"false","aGraphic":"","yOffset":"72","DefaultWindowskin":"win_marilla"}},
 {"name":"StopMovement","status":true,"description":"Stops player/NPC movement based on switches.","parameters":{"PC Switch ID":"105","NPC Switch ID":"106"}},
-{"name":"Blue_MenuWitch","status":true,"description":"v1.0.0 \"WITCH\" - #2 Release for Menu Collection","parameters":{"Age Var":"39","Mood Var":"38","Outfit Var":"36","Task Var":"35","Season Var":"41","Load Command Text":"Load","Animation Speed":"24","Use Witch Item System?":"true","Actor Image":"young_portrait","Sprite Character":"$anne_dream"}}
+{"name":"Blue_MenuWitch","status":true,"description":"v1.0.0 \"WITCH\" - #2 Release for Menu Collection","parameters":{"Age Var":"39","Mood Var":"38","Outfit Var":"36","Task Var":"35","Season Var":"41","Load Command Text":"Load","Animation Speed":"24","Use Witch Item System?":"true","Actor Image":"young_portrait","Sprite Character":"$anne_dream","Menu Window Skin":"win_default"}}
 ];
