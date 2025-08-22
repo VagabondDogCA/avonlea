@@ -754,9 +754,25 @@ Window_Base.prototype.loadPopMessageWindowskin = function() {
 		const skin = Galv.Mstyle.tempPopData.windowskin ? Galv.Mstyle.tempPopData.windowskin : $gameSystem._mStyles[1].windowskin;
 		return this.windowskin = ImageManager.loadSystem(skin);
 	} else {
-		// use the windowskin defined by game variable (now variable 60) or fallback to default
-		const varSkin = $gameVariables.value(60); // Changed from 50 to 60
-		const skin = varSkin && varSkin.length > 0 ? varSkin : Galv.Mstyle.defaultWindowskin;
+		// use the windowskin defined by \win[file] or fallback to default
+		const skin = Galv.Mstyle.tempPopData.windowskin ? Galv.Mstyle.tempPopData.windowskin : Galv.Mstyle.defaultWindowskin;
 		return this.windowskin = ImageManager.loadSystem(skin);
 	}
+};
+
+// --- Choice Window Windowskin Override ---
+Galv.Mstyle.Window_ChoiceList_initialize = Window_ChoiceList.prototype.initialize;
+Window_ChoiceList.prototype.initialize = function(messageWindow) {
+    Galv.Mstyle.Window_ChoiceList_initialize.call(this, messageWindow);
+    this.loadChoiceWindowskin();
+};
+
+Window_ChoiceList.prototype.loadChoiceWindowskin = function() {
+    this.windowskin = ImageManager.loadSystem("win_blank");
+};
+
+Galv.Mstyle.Window_ChoiceList_refresh = Window_ChoiceList.prototype.refresh;
+Window_ChoiceList.prototype.refresh = function() {
+    this.loadChoiceWindowskin();
+    Galv.Mstyle.Window_ChoiceList_refresh.call(this);
 };
